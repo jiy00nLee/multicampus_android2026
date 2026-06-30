@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">TripApp</string>
+    <string name="main_text_1">연말연시 특별할인 이벤트 \n 최대 20% 할인</string>
+    <string name="main_text_2_1">특가 여행지</string>
+    <string name="main_text_2_2">특가 여행지 보기</string>
+    <string name="main_card_text_1_1">스위스</string>
+    <string name="main_card_text_1_2">최대 20% 할인</string>
+    <string name="main_card_text_2_1">호주</string>
+    <string name="main_card_text_2_2">최대 10% 할인</string>
+    <string name="main_card_text_3_1">조지아</string>
+    <string name="main_card_text_3_2">최대 20% 할인</string>
+    <string name="main_card_text_4_1">몽골</string>
+    <string name="main_card_text_4_2">최대 20% 할인</string>
+    <string name="main_card_text_5_2">최대 15% 할인</string>
+    <string name="main_card_text_5_1">하와이</string>
+    <string name="main_card_text_6_2">최대 5% 할인</string>
+    <string name="main_card_text_6_1">하와이</string>
+</resources>

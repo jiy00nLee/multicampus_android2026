@@ -271,5 +271,12 @@
             </androidx.cardview.widget.CardView>
         </GridLayout>
 
+        <!-- (임시) 테스트 버튼 -->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="이동"
+            android:id="@+id/btn_moveToAboutActivity"/>
+
     </LinearLayout>
 </ScrollView>

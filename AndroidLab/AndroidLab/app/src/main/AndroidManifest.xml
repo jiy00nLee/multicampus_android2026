@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+<!--
+앱의 모든 리소스는 res 폴더 하위에..
+모든 리소스는 자동으로 만들어지는 R.java 의 int 상수 변수로 식별된다..
+코드에서 리소스를 사용할 때 : R.drawable.a
+xml 속성 값으로 리소스 지정할 때 : @drawable/a
+
+-->
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AndroidLab">
+<!--      컴포넌트는 시스템에서 라이프사이클 관리한다.
+시스템은 manifest 만 보고 움직인다..
+==>개발자가 만든 컴포넌트 시스템에 등록해야 한다. manifest 에 등록해야 한다..-->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+<!--            아이콘 클릭시 실행되는 액티비티라는 선언..-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

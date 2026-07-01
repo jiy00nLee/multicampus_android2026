@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* xml특징 > 'namespace : 속성'으로 선언 설정
+  xmlns == xml의 namespace
+
+  xml 속성, 정보이다. 누군가는 이 정보를 참조해서 처리를 해주어야 한다.
+  속성을 참조해서 처리하는 api가 platform api라면, 표준 속성이다.
+  허나 platform api가 아니라면, 표준 속성이 아니다.
+
+  Ex. showAsAction의 경우 표준 x. 하위 호환성 문제가 존재 o.
+      이를 해결하기 위해서 액티비티의 경우 호환성 해결을 위해
+      appcompat 라이브러리의 AppCompatActivity를 상속하여 만든다.
+      => Androidx 최고
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_search"
+        android:title="검색"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+    <item
+        android:id="@+id/menu_setting"
+        android:title="설정"/>
+</menu>
+<!--
+    메뉴를 적용하려면
+    테마를 조정해서 actionbar가 출력되게 하거나
+    액션바를 대체하기 위한 toolbar를 사용하던가 (권장)
+-->

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MyInfoActivity"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:cardCornerRadius="75dp"
+        app:cardElevation="0dp"
+        android:layout_marginTop="30dp">
+        <ImageView
+            android:id="@+id/userImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/user_basic"
+            android:scaleType="centerCrop"
+            />
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/galleryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gallery App"
+        android:layout_marginTop="24dp"/>
+    <Button
+        android:id="@+id/cameraButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Camera App"
+        android:layout_marginTop="24dp"/>
+
+    <EditText
+        android:id="@+id/my_info_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:hint="이메일을 입력하세요"
+        android:layout_marginTop="30dp"/>
+
+    <EditText
+        android:id="@+id/my_info_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:hint="전화번호를 입력하세요"/>
+
+    <Button
+        android:id="@+id/testSaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test - save"/>
+
+    <TextView
+        android:id="@+id/my_info_internal_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/my_info_internal_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="internal file test"/>
+
+    <TextView
+        android:id="@+id/my_info_external_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/my_info_external_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="external file test"/>
+
+
+
+</LinearLayout>

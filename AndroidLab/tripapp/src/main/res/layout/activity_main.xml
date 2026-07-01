@@ -275,8 +275,13 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="이동"
+            android:text="이동(About)"
             android:id="@+id/btn_moveToAboutActivity"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="이동(MyInfo)"
+            android:id="@+id/btn_moveToMyInfoActivity"/>
 
     </LinearLayout>
 </ScrollView>

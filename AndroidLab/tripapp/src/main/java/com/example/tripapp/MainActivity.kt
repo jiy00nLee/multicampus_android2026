@@ -57,6 +57,10 @@ class MainActivity : AppCompatActivity() {
             moveToAboutActivity()
         }
 
+        binding.btnMoveToMyInfoActivity.setOnClickListener {
+            moveToMyInfoActivity()
+        }
+
         // back button 이벤트 처리의 기본은 onKeyDown()으로 키 이벤트 처리가 기본
         // 허나 앱에서 백버튼 이벤트 처리의 비율이 높고 이벤트 처리 로직이여러개이경우가 있어,
         // api 33에서 onKeyDown()으로 백버튼 이벤트 처리가 deprecated 되었고 addCallback으로 별도 callback 등록 권장
@@ -81,6 +85,11 @@ class MainActivity : AppCompatActivity() {
 
     fun moveToAboutActivity(){
         val intent = Intent(this, AboutActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun moveToMyInfoActivity(){
+        val intent = Intent(this, MyInfoActivity::class.java)
         startActivity(intent)
     }
 }

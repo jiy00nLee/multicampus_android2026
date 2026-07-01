@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:key="notification"
+        android:title="알림"
+        android:summaryOn="알림이 켜졌습니다."
+        android:summaryOff="알림이 꺼졌습니다."/>
+    <EditTextPreference
+        android:key="id"
+        android:title="ID 설정"/>
+    <ListPreference
+        android:key="color"
+        android:title="색상선택"
+        android:entries="@array/settings_color"
+        android:entryValues="@array/settings_color"/>
+</androidx.preference.PreferenceScreen>

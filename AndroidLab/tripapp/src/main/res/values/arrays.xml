@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 문자열 리소스 여러개를 한꺼번에 사용할 경우,
+         배열 리소스로 등록해서 한번에 문자열 배열로 획득. (Ex. R.array.a)
+     -->
+    <string-array name="settings_color">
+        <item>red</item>
+        <item>blue</item>
+        <item>green</item>
+    </string-array>
+</resources>

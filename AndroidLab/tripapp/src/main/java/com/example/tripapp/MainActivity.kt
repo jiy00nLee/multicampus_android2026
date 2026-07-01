@@ -2,7 +2,6 @@ package com.example.tripapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
@@ -50,15 +49,19 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.mainCardview1.setOnClickListener{
-            moveToDetailActivity()
+            moveToActivity(DetailActivity::class.java)
         }
 
         binding.btnMoveToAboutActivity.setOnClickListener {
-            moveToAboutActivity()
+            moveToActivity(AboutActivity::class.java)
         }
 
         binding.btnMoveToMyInfoActivity.setOnClickListener {
-            moveToMyInfoActivity()
+            moveToActivity(MyInfoActivity::class.java)
+        }
+
+        binding.btnMoveToSettingActivity.setOnClickListener {
+            moveToActivity(SettingActivity::class.java)
         }
 
         // back button 이벤트 처리의 기본은 onKeyDown()으로 키 이벤트 처리가 기본
@@ -78,18 +81,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun moveToDetailActivity(){
-        val intent = Intent(this, DetailActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun moveToAboutActivity(){
-        val intent = Intent(this, AboutActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun moveToMyInfoActivity(){
-        val intent = Intent(this, MyInfoActivity::class.java)
+    fun moveToActivity(activityClass: Class<*>){
+        val intent = Intent(this, activityClass)
         startActivity(intent)
     }
 }

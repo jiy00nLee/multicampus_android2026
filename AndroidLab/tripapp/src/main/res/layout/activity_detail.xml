@@ -1,10 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- 화면에 같이 나오는 뷰간의 상호 작용을 도와주는 레이아웃. 같이 스크롤됨. -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".DetailActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<!-- 툴바를 포함한 화면 상단을 다양하게 꾸미기 위해서. (Ex. 툴바, 대표이미지, 탭버튼 등) -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:id="@+id/detail_appbar">
+<!--       contentScrim : 화면이 접혀서 자신의 내용이 다 나오기 힘들 정도로 작아지면, 지정한 색상으로 칠하라.
+            layout_scrollFlags : 접힐것인가 여부
+            scroll|exitUntilCollapsed : 접힌다 | 한줄은 남긴다
+-->
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="#3899DD"
+            app:title="스위스"
+            app:expandedTitleMarginBottom="50dp"
+            app:expandedTitleMarginStart="45dp"
+            app:expandedTitleTextColor="#FFFFFF"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+<!--        layout_collapseMode : 개별뷰는 어떻게 화면출력할 것인지 설정모드    -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/detail_appbar_imageView"
+                android:src="@drawable/detail_main"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax"/>
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:id="@+id/detail_toolbar"
+                app:layout_collapseMode="pin"/>
+            <com.google.android.material.tabs.TabLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/detail_tabs"
+                android:layout_gravity="bottom"
+                android:background="#00000000"
+                app:tabMode="scrollable"
+                app:tabTextColor="#FFFFFF"/>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+<!-- layout_behavior : 단순 문자열이 아닌, 클래스명.
+ CoordinatorLayout에 알려줘서 자신의 스크롤 정보를 누구에게 전달하면 되는지 알려줌.
+ -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/detail_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </androidx.viewpager2.widget.ViewPager2>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -7,15 +7,22 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tripapp.databinding.ActivityMainBinding
+import com.example.tripapp.databinding.NavigationHeaderBinding
+import com.example.tripapp.db.selectInfo
 
 class MainActivity : AppCompatActivity() {
 
-    var initTime= 0L // backButton이 눌린 시간
+    var initTime= 0L // backButton이 눌린
+    lateinit var toggle : ActionBarDrawerToggle
+    lateinit var headerBinding: NavigationHeaderBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,10 +31,21 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        // inflate가 아닌 bind로 묶는 이유?
+        // xml이 별개여서 별도로 메모리에 올리기는 하지만 독립적으로 사용되는 뷰 객체의 계층이 아니라
+        // 다른 뷰 객체 계층에 추가되어야 해서
+        headerBinding = NavigationHeaderBinding.bind(binding.mainDrawerView.getHeaderView(0))
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+            // toolbar height를 상태바 높이만큼 늘리고 padding 적용
+            val params = binding.toolbar.layoutParams
+            params.height = systemBars.top + resources.getDimensionPixelSize(
+                androidx.appcompat.R.dimen.abc_action_bar_default_height_material
+            )
+            binding.toolbar.layoutParams = params
+            binding.toolbar.setPadding(0, systemBars.top, 0, 0)
+            WindowInsetsCompat.CONSUMED
         }
 
         // 액티비티 윈도우의 액션바를 개발자가 지정한 툴바에 적용 필요.
@@ -58,12 +76,40 @@ class MainActivity : AppCompatActivity() {
             moveToActivity(DetailActivity::class.java)
         }
 
-        binding.btnMoveToAboutActivity.setOnClickListener {
-            moveToActivity(AboutActivity::class.java)
+        // 매개변수에 지정한 문자열. 화면 출력과는 관련없이 상태를 표현하는 문자열.
+        toggle = ActionBarDrawerToggle(this, binding.main,
+            R.string.drawer_opened, R.string.drawer_closed)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toggle.syncState()
+
+        // 액티비티 인텐트를 발생시키고, 되돌아올때 사후처리를 위한 런처 설정
+        val launcher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()){ activityResult ->
+            // 되돌아 올 때 콜백 사후처리 로직
+            val email = activityResult.data?.getStringExtra("email")
+            email?.let {
+                headerBinding.userEmailView.text = email
+            }
         }
 
-        binding.btnMoveToMyInfoActivity.setOnClickListener {
-            moveToActivity(MyInfoActivity::class.java)
+        // NavigationView의 항목 이벤트 처리
+        binding.mainDrawerView.setNavigationItemSelectedListener { it ->
+            when(it.itemId){
+                R.id.main_navigation_about -> moveToActivity(AboutActivity::class.java)
+                R.id.main_navigation_edit_info -> moveToActivityWithLauncher(MyInfoActivity::class.java, launcher)
+            }
+            true
+        }
+
+        // 액티비티 출력되면서 DB에 저장된 myinfo 데이터 출력
+        val cursor = selectInfo(this)
+        cursor?.let {
+            if (cursor.moveToFirst()){
+                headerBinding.run {
+                    userEmailView.setText(cursor.getString(1))
+                }
+            }
         }
 
         // back button 이벤트 처리의 기본은 onKeyDown()으로 키 이벤트 처리가 기본
@@ -107,8 +153,11 @@ class MainActivity : AppCompatActivity() {
 
     // 메뉴 이벤트 처리 자동 호출
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.menu_setting -> moveToActivity(SettingActivity::class.java)
+        // ActionBarDrawerToggle > 내부적으로 메뉴로 준비된다. 이벤트시 메뉴 이벤트 함수 호출.
+        // 자체 준비된 drawer 제어 로직 실행되도록 호출해주어야 한다.
+        if (toggle.onOptionsItemSelected(item)) return true
+        else if (item.itemId == R.id.menu_setting) {
+            moveToActivity(SettingActivity::class.java)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -118,5 +167,10 @@ class MainActivity : AppCompatActivity() {
     fun moveToActivity(activityClass: Class<*>){
         val intent = Intent(this, activityClass)
         startActivity(intent)
+    }
+
+    fun moveToActivityWithLauncher(activityClass: Class<*>, launcher:ActivityResultLauncher<Intent>){
+        val intent = Intent(this, activityClass)
+        launcher.launch(intent)
     }
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="#3899DD">
+    <TextView
+        android:id="@+id/userEmailView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="custom@a.com"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="30dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="0dp"
+        android:layout_above="@id/userEmailView"
+        android:layout_alignLeft="@id/userEmailView"
+        android:layout_marginBottom="10dp">
+        <ImageView
+            android:id="@+id/userImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/user_basic"
+            android:scaleType="centerCrop"
+            />
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

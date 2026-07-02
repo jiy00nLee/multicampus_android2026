@@ -26,5 +26,7 @@
     Agoda has a global network of 4.5 million hotels and vacation rentals around the world, helping everyone travel anywhere with affordable prices, including flights and activities. Agoda.com and the Agoda mobile app are available in 39 languages ​​and have 24/7 customer support. Booking Holdings Inc. Agoda, part of (Nasdaq: BKNG), is headquartered in Singapore and has over 7,000 employees in 27 countries/regions around the world who are committed to using the best technology to make travel easier and more convenient.
     </string>
     <string name="about_more">More</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

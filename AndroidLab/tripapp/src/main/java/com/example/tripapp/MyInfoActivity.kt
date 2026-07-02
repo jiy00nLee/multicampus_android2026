@@ -55,7 +55,15 @@ class MyInfoActivity : AppCompatActivity() {
 
             if (email?.isNotEmpty() ?: false){
                 if (insertInfo(this, email?:"", phone, photo)){
-                    Toast.makeText(this, "DB 저장 성공", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "내정보 저장 성공", Toast.LENGTH_SHORT).show()
+                    // 자신을 실행시킨 곳으로 화면을 되돌리면서 결과 데이터 포함
+                    // 액티비티내에서 intent는 자신을 실행시킨 인텐트 정보를 말한다.
+                    intent.putExtra("phone", phone)
+                    intent.putExtra("email", email)
+                    intent.putExtra("photo", photo)
+                    // 되돌리기 전에 어떤 상태인지를 명시해야 한다.
+                    setResult(RESULT_OK, intent)
+                    // 액티비티 종료시켜서 이전화면으로 자동 전환되게
                     finish()
                 }
             }

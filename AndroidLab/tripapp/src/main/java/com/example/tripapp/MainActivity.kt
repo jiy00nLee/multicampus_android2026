@@ -3,6 +3,9 @@ package com.example.tripapp
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -133,6 +136,15 @@ class MainActivity : AppCompatActivity() {
                     }else{
                         noti()
                     }
+                }
+                R.id.main_navigation_schedular -> {
+                    val scheduler : JobScheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
+                    // 조건 설정
+                    // JobId : 외부에서 이 id로 구동 중인 서비스를 종료시킬 수 있다.
+                    val builder = JobInfo.Builder(1, ComponentName(this, MyJobService::class.java))
+
+                    builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED) // Network타입이 wifi일때
+                    scheduler.schedule(builder.build())
                 }
             }
             true

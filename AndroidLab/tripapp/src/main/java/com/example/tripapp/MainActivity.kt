@@ -110,8 +110,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 퍼미션 조정 다이얼로그를 띄우고, 닫혔을 때 사후처리
-        val requestpermission = ActivityResultContracts.RequestPermission()
-        val permissionLauncher = registerForActivityResult(requestpermission){
+        val requestPermission = ActivityResultContracts.RequestPermission()
+        val permissionLauncher = registerForActivityResult(requestPermission){
             if(it) noti()
             else Toast.makeText(this, "permission 거부", Toast.LENGTH_SHORT).show()
 
@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity() {
         cursor?.let {
             if (cursor.moveToFirst()){
                 headerBinding.run {
-                    userEmailView.setText(cursor.getString(1))
+                    userEmailView.text = cursor.getString(1)
 
                     val photo = cursor.getString(3)
                     if (photo?.isNotEmpty()?:false){

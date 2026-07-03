@@ -53,4 +53,7 @@ dependencies {
     // 따라서 아래와 같이 작성하는 것이 기본인데..
     // 라이브러리를 libs.version.toml에 등록하고 이용하는 곳에서 링크만 걸어서 사용.
     implementation("androidx.preference:preference-ktx:1.2.1")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }

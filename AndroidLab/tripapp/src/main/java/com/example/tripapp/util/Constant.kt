@@ -4,6 +4,9 @@ import com.example.tripapp.R
 import com.example.tripapp.detail.Product
 
 object Constant {
+
+    const val newsApiKey : String = "079dac74a5f94ebdb990ecf61c8854b7"
+    const val newsApiUrl : String = "https://news.org"
     const val dbName : String = "testDB"
 
     val testDataList = mutableListOf<Product>(

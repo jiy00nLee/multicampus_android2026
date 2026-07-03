@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 외장 앱별/외부앱에게 공개하려면, xml에 파일/디렉토리 명시
+     이 xml 파일 manifest에 등록해서 시스템에서 인지시켜야 한다.
+-->
+<paths
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path
+        name="myfiles"
+        path="Android/data/com.example.tripapp/files/Pictures"/>
+</paths>

@@ -27,6 +27,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.tripapp.databinding.ActivityMainBinding
 import com.example.tripapp.databinding.NavigationHeaderBinding
 import com.example.tripapp.db.selectInfo
+import com.example.tripapp.util.fileToImageView
 
 class MainActivity : AppCompatActivity() {
 
@@ -99,8 +100,12 @@ class MainActivity : AppCompatActivity() {
             ActivityResultContracts.StartActivityForResult()){ activityResult ->
             // 되돌아 올 때 콜백 사후처리 로직
             val email = activityResult.data?.getStringExtra("email")
+            val photo = activityResult?.data?.getStringExtra("photo")
             email?.let {
                 headerBinding.userEmailView.text = email
+            }
+            photo?.let {
+                fileToImageView(this@MainActivity, photo, headerBinding.userImageView)
             }
         }
 
@@ -150,12 +155,17 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        // 액티비티 출력되면서 DB에 저장된 myinfo 데이터 출력
+        // 액티비티 출력되면서 DB에 저장된 myInfo 데이터 출력
         val cursor = selectInfo(this)
         cursor?.let {
             if (cursor.moveToFirst()){
                 headerBinding.run {
                     userEmailView.setText(cursor.getString(1))
+
+                    val photo = cursor.getString(3)
+                    if (photo?.isNotEmpty()?:false){
+                        fileToImageView(this@MainActivity, photo, userImageView)
+                    }
                 }
             }
         }

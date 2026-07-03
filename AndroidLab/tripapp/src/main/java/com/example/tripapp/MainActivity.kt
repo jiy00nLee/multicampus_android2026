@@ -1,6 +1,11 @@
 package com.example.tripapp
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -12,6 +17,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tripapp.databinding.ActivityMainBinding
@@ -83,8 +90,9 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toggle.syncState()
 
+        // [비즈니스로직] 인텐트 설정 처리 코드 ------------------------------------------------------------------------------------------
         // 액티비티 인텐트를 발생시키고, 되돌아올때 사후처리를 위한 런처 설정
-        val launcher = registerForActivityResult(
+        val activityLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()){ activityResult ->
             // 되돌아 올 때 콜백 사후처리 로직
             val email = activityResult.data?.getStringExtra("email")
@@ -93,11 +101,39 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // 퍼미션 조정 다이얼로그를 띄우고, 닫혔을 때 사후처리
+        val requestpermission = ActivityResultContracts.RequestPermission()
+        val permissionLauncher = registerForActivityResult(requestpermission){
+            if(it) noti()
+            else Toast.makeText(this, "permission 거부", Toast.LENGTH_SHORT).show()
+
+        }
+        // [비즈니스로직] 인텐트 설정 처리 코드 ------------------------------------------------------------------------------------------
+
         // NavigationView의 항목 이벤트 처리
         binding.mainDrawerView.setNavigationItemSelectedListener { it ->
             when(it.itemId){
                 R.id.main_navigation_about -> moveToActivity(AboutActivity::class.java)
-                R.id.main_navigation_edit_info -> moveToActivityWithLauncher(MyInfoActivity::class.java, launcher)
+                R.id.main_navigation_edit_info -> moveToActivityWithLauncher(MyInfoActivity::class.java, activityLauncher)
+                R.id.main_navigation_notification -> {
+                    // 1. API 33 이상일 경우 - 퍼미션 체크 필요
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+                        // 1-1. 퍼미션 허용상태 (PERMISSION_GRANTED)
+                        if (ContextCompat.checkSelfPermission(
+                                this, "android.permission.POST_NOTIFICATIONS"
+                            ) == PackageManager.PERMISSION_GRANTED
+                        ){
+                            noti()
+                        }
+                        else{
+                            // 1-2. 퍼미션 거부상태 (PERMISSION_DENIED) > 조정 다이어로그 띄움
+                            permissionLauncher.launch("android.permission.POST_NOTIFICATIONS")
+                        }
+                    // 2. API 33 밑일 경우
+                    }else{
+                        noti()
+                    }
+                }
             }
             true
         }
@@ -173,4 +209,38 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, activityClass)
         launcher.launch(intent)
     }
+
+    fun noti(){
+        val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        val builder : NotificationCompat.Builder
+
+        // API 26 이상일 경우 - NotificationChannel 객체 생성 필요
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "one-channel",
+                "OneChannel",
+                NotificationManager.IMPORTANCE_LOW
+            )
+            // 반드시 NotificationManager에 채널을 등록해야 함.
+            // 앱이 실행되며 최초 한번만 등록하면 되긴 하나, 성능에 문제가 없어 띄우기전에 반복적 등록을 권장함.
+            manager.createNotificationChannel(channel)
+            // 등록된 채널의 id를 명시하여 Builder를 생성
+            builder = NotificationCompat.Builder(this, "one-channel")
+        }else{
+            builder = NotificationCompat.Builder(this)
+        }
+
+        builder.setSmallIcon(android.R.drawable.ic_notification_overlay)
+        builder.setWhen(System.currentTimeMillis())
+        builder.setContentTitle("메세지 도착")
+        builder.setContentText("항공기 특가 할인 쿠폰이 도착했습니다.")
+        // 이벤트 의뢰 등록
+        val intent = Intent(this, MyReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        builder.setContentIntent(pendingIntent)
+
+        // 이벤트 발생
+        manager.notify(11, builder.build())
+    }
+
 }
